@@ -1,6 +1,6 @@
 {
 	"name": "language-translator",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Translates given text to desired language",
 	"main": "main.js",
 	"scripts": {
@@ -11,7 +11,7 @@
 	"author": "",
 	"license": "MIT",
 	"devDependencies": {
-		"@types/node": "^16.11.1",
+		"@types/node": "^16.11.7",
 		"esbuild": "0.13.8",
 		"obsidian": "^0.12.17",
 		"tslib": "2.3.1",
