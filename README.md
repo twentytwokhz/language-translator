@@ -33,14 +33,22 @@ Or, if you'd like to install it manually, clone this repository to the `.obsidia
 
 ## Usage
 
+By explicitly specifying the language code
+
 ```markdown
 fr:I want to break free
+```
+
+Directly, via the default language code in the settings.
+
+```markdown
+I want to break free
 ```
 
 First part is the prefix containing the language code (See codes [here](https://docs.microsoft.com/en-us/azure/cognitive-services/translator/language-support))
 Second part is the actual text for translation.
 
-Select the text and use the shortcut to translate it to the prefixed language 🥳
+Select the text and use the shortcut to translate it to the prefixed language or the default one set in the settings 🥳
 
 > Text selection limited to 1000 characters
 
