@@ -11,6 +11,13 @@
   </p>
 </p>
 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/twentytwokhz/language-translator)
+![GitHub Release Date](https://img.shields.io/github/release-date/twentytwokhz/language-translator)
+![GitHub issues](https://img.shields.io/github/issues/twentytwokhz/language-translator)
+
+![GitHub all releases](https://img.shields.io/github/downloads/twentytwokhz/language-translator/total)
+![GitHub](https://img.shields.io/github/license/twentytwokhz/language-translator)
+
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
