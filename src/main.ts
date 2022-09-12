@@ -1,73 +1,72 @@
-import {
-	App,
-	Editor,
-	Notice,
-	Plugin,
-	PluginSettingTab,
-	Setting,
-} from "obsidian";
+import { Editor, Notice, Plugin } from "obsidian";
 import LanguageCode from "./languageCode";
+import API_TYPES from "./apiTypes";
+import LanguageTranslatorSettingsTab from "./settingsTab";
+import { getTextAzure, getTextLibreTranslate } from "./translation";
+import API_URLS from "./apiUrls";
+import ApiEntry from "./apiEntry";
 import langCodes from "./langCodes";
 
-const TRANSLATE_API_URL = "https://api.cognitive.microsofttranslator.com";
-const AUTH_URL =
+const AZURE_AUTH_URL =
 	"https://func-language-worker-auth.azurewebsites.net/api/GetAuthToken";
-const MAX_CHARACTERS = 1000;
+const MAX_CHARACTERS = 2000;
 
 interface LanguageTranslatorSettings {
-	defaultLanguage: LanguageCode;
+	targetLanguage: LanguageCode;
+	apiType: ApiEntry;
+	translateApiUrl: string;
+	maxCharacters: number;
+	token: string;
 }
 
 const DEFAULT_SETTINGS: LanguageTranslatorSettings = {
-	defaultLanguage: {
+	targetLanguage: {
 		text: "English",
 		code: "en",
 	},
+	apiType: {
+		text: "Builtin",
+		value: "0",
+	},
+	translateApiUrl: API_URLS.AZURE_TRANSLATE_API_URL,
+	maxCharacters: MAX_CHARACTERS,
+	token: "",
 };
 
 export default class LanguageTranslator extends Plugin {
 	settings: LanguageTranslatorSettings;
-	token: string;
 
 	onEditorCallback = async (editor: Editor) => {
 		let res = "[translation error]";
 		try {
 			const selection = editor.getSelection();
-			if (selection.length > MAX_CHARACTERS) {
-				new Notice(`Exceeded ${MAX_CHARACTERS} max characters!`);
+			if (selection.length > this.settings.maxCharacters) {
+				new Notice(
+					`Exceeded ${this.settings.maxCharacters} max characters!`
+				);
 				return;
 			}
-
 			let textForTranslation = selection;
-			let targetLang = this.settings.defaultLanguage.code;
+			let targetLang = this.settings.targetLanguage.code;
 
-			let splittedText = textForTranslation.split(":", 2);
-			if (splittedText.length != 2 && !targetLang) {
-				new Notice("Incorrect format!");
-				return;
-			} else if (splittedText.length == 2) {
-				//contains lang code
-				targetLang = splittedText[0];
-				textForTranslation = splittedText[1];
-			}
-
-			const payload = JSON.stringify([{ text: textForTranslation }]);
-			const myHeaders = new Headers({
-				"Ocp-Apim-Subscription-Key": this.token,
-				"Ocp-Apim-Subscription-Region": "WestEurope",
-				"Content-type": "application/json",
-			});
-
-			const response = await fetch(
-				`${TRANSLATE_API_URL}/translate?api-version=3.0&to=${targetLang}`,
-				{
-					method: "POST",
-					body: payload,
-					headers: myHeaders,
+			let firstSemicolonIndex = textForTranslation.indexOf(":");
+			if (firstSemicolonIndex != -1) {
+				let potentialLangCode = textForTranslation.substring(
+					0,
+					firstSemicolonIndex
+				);
+				if (potentialLangCode) {
+					let lc = langCodes.find((l) => l.code == potentialLangCode);
+					if (lc) {
+						targetLang = lc.code;
+						textForTranslation = textForTranslation.substring(
+							firstSemicolonIndex + 1
+						);
+					}
 				}
-			);
-			const json = await response.json();
-			res = json[0].translations[0].text;
+			}
+			//call the translation api to retrieve the string
+			res = await this.getTranslation(targetLang, textForTranslation);
 		} catch (err) {
 			console.log(err);
 			new Notice(err.message);
@@ -75,19 +74,41 @@ export default class LanguageTranslator extends Plugin {
 		editor.replaceSelection(res);
 	};
 
-	getToken = async () => {
-		try {
-			const response = await fetch(AUTH_URL);
-			this.token = await response.text();
-		} catch (err) {
-			console.log(err);
-			new Notice(err.message);
+	async getTranslation(lang: string, text: string) {
+		let result = "";
+		switch (Number(this.settings.apiType.value)) {
+			case API_TYPES.Builtin:
+				let token = await this.getBuiltinAzureToken();
+				result = await getTextAzure(
+					text,
+					lang,
+					token,
+					this.settings.translateApiUrl
+				);
+				break;
+			case API_TYPES.Azure:
+				result = await getTextAzure(
+					text,
+					lang,
+					this.settings.token,
+					this.settings.translateApiUrl
+				);
+				break;
+			case API_TYPES.LibreTranslate:
+				result = await getTextLibreTranslate(
+					text,
+					lang,
+					this.settings.token,
+					this.settings.translateApiUrl
+				);
+				break;
 		}
-	};
+		return result;
+	}
 
 	async onload() {
 		await this.loadSettings();
-		await this.getToken();
+
 		// This adds an editor command that can perform some operation on the current editor instance
 		this.addCommand({
 			id: "language-translator-editor-command",
@@ -105,6 +126,16 @@ export default class LanguageTranslator extends Plugin {
 		this.addSettingTab(new LanguageTranslatorSettingsTab(this.app, this));
 	}
 
+	getBuiltinAzureToken = async () => {
+		try {
+			const response = await fetch(AZURE_AUTH_URL);
+			return await response.text();
+		} catch (err) {
+			console.log(err);
+			new Notice(err.message);
+		}
+	};
+
 	async loadSettings() {
 		this.settings = Object.assign(
 			{},
@@ -115,38 +146,5 @@ export default class LanguageTranslator extends Plugin {
 
 	async saveSettings() {
 		await this.saveData(this.settings);
-	}
-}
-
-class LanguageTranslatorSettingsTab extends PluginSettingTab {
-	plugin: LanguageTranslator;
-
-	constructor(app: App, plugin: LanguageTranslator) {
-		super(app, plugin);
-		this.plugin = plugin;
-	}
-
-	display(): void {
-		let { containerEl } = this;
-
-		containerEl.empty();
-
-		containerEl.createEl("h2", { text: "Language Translator Settings" });
-
-		new Setting(containerEl)
-			.setName("Default Language")
-			.setDesc("Set default language for translations")
-			.addDropdown((dropDown) => {
-				langCodes.forEach((el) => {
-					dropDown.addOption(el.code, el.text);
-				});
-				dropDown.onChange(async (value) => {
-					this.plugin.settings.defaultLanguage = langCodes.find(
-						(l) => l.code == value
-					);
-					await this.plugin.saveSettings();
-				});
-				dropDown.setValue(this.plugin.settings.defaultLanguage.code);
-			});
 	}
 }

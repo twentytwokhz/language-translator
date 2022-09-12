@@ -20,6 +20,10 @@
 
 <!-- ABOUT THE PROJECT -->
 
+# Language Translator
+
+An Obsidian plugin to translate selected text in the desired language.
+
 ## About The Project
 
 This plugin allows you to translate selected text into the desired language.
@@ -40,27 +44,26 @@ Or, if you'd like to install it manually, clone this repository to the `.obsidia
 
 ## Usage
 
-By explicitly specifying the language code
+1. First you need to define the text to be translated. There are two options available:
+   - By explicitly specifying the language code
 
-```markdown
-fr:I want to break free
-```
+     ```markdown
+     fr:I want to break free
+     ```
+     First part is the prefix containing the language code (See codes [here](https://docs.microsoft.com/en-us/azure/cognitive-services/translator/language-support)). The second part is the actual text for translation.
 
-Directly, via the default language code in the settings.
+   - Or directly, using the default source language code in the settings.
 
-```markdown
-I want to break free
-```
-
-First part is the prefix containing the language code (See codes [here](https://docs.microsoft.com/en-us/azure/cognitive-services/translator/language-support))
-Second part is the actual text for translation.
-
-Select the text and use the shortcut to translate it to the prefixed language or the default one set in the settings 🥳
-
-> Text selection limited to 1000 characters
+     ```markdown
+     I want to break free
+     ```
+     
+2. Select the text
+3. Execute the translation by
+   - Hitting `Ctrl+P` and executing the `Language Translator: Insert translation` command
+   - or by using the predefined hotkey (default is `Ctrl+Shift+R`)
 
 <!-- CONTRIBUTING -->
-
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
