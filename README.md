@@ -1,7 +1,24 @@
-![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/twentytwokhz/language-translator?style=flat-square)
-![GitHub all releases](https://img.shields.io/github/downloads/twentytwokhz/language-translator/total?logo=GitHub&style=flat-square)
-![GitHub Release Date](https://img.shields.io/github/release-date/twentytwokhz/language-translator?style=flat-square)
-![GitHub last commit](https://img.shields.io/github/last-commit/twentytwokhz/language-translator?logo=Git&style=flat-square)
+<p align="center">
+  <h1 align="center">Language Translator</h3>
+
+  <p align="center">
+    An Obsidian plugin to translate selected text in the desired language.
+    <br />
+    <br />
+    <a href="https://github.com/twentytwokhz/language-translator/issues">Report a Bug</a>
+    ·
+    <a href="https://github.com/twentytwokhz/language-translator/issues">Request a Feature</a>
+  </p>
+</p>
+
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/twentytwokhz/language-translator)
+![GitHub Release Date](https://img.shields.io/github/release-date/twentytwokhz/language-translator)
+![GitHub issues](https://img.shields.io/github/issues/twentytwokhz/language-translator)
+
+![GitHub all releases](https://img.shields.io/github/downloads/twentytwokhz/language-translator/total)
+![GitHub](https://img.shields.io/github/license/twentytwokhz/language-translator)
+
+<!-- ABOUT THE PROJECT -->
 
 # Language Translator
 
