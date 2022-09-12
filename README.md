@@ -1,5 +1,5 @@
 <p align="center">
-  <h1 align="center">Language Translator</h3>
+  <h1 align="center">Language Translator</h1>
 
   <p align="center">
     An Obsidian plugin to translate selected text in the desired language.
@@ -62,6 +62,7 @@ Or, if you'd like to install it manually, clone this repository to the `.obsidia
 3. Execute the translation by
    - Hitting `Ctrl+P` and executing the `Language Translator: Insert translation` command
    - or by using the predefined hotkey (default is `Ctrl+Shift+R`)
+   <img src="img/language-translator-command.png" alt="Logo" height=100>
 
 <!-- CONTRIBUTING -->
 ## Contributing
