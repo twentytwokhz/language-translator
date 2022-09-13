@@ -1,4 +1,7 @@
 <p align="center">
+  <a href="https://github.com/twentytwokhz/language-translator">
+    <img src="https://github.com/twentytwokhz/language-translator/raw/master/translator.png" alt="Logo" height=100>
+  </a>
   <h1 align="center">Language Translator</h1>
 
   <p align="center">
