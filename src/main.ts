@@ -1,11 +1,10 @@
 import { Editor, Notice, Plugin } from "obsidian";
 import LanguageCode from "./languageCode";
-import API_TYPES from "./apiTypes";
 import LanguageTranslatorSettingsTab from "./settingsTab";
-import { getTextAzure, getTextLibreTranslate } from "./translation";
 import API_URLS from "./apiUrls";
 import ApiEntry from "./apiEntry";
 import langCodes from "./langCodes";
+import { TranslationServiceImplementation } from "./translationServiceImplementation";
 
 const AZURE_AUTH_URL =
 	"https://func-language-worker-auth.azurewebsites.net/api/GetAuthToken";
@@ -35,6 +34,7 @@ const DEFAULT_SETTINGS: LanguageTranslatorSettings = {
 
 export default class LanguageTranslator extends Plugin {
 	settings: LanguageTranslatorSettings;
+	translationService: TranslationServiceImplementation;
 
 	onEditorCallback = async (editor: Editor) => {
 		let res = "[translation error]";
@@ -66,7 +66,10 @@ export default class LanguageTranslator extends Plugin {
 				}
 			}
 			//call the translation api to retrieve the string
-			res = await this.getTranslation(targetLang, textForTranslation);
+			res = await this.translationService.translate(
+				targetLang,
+				textForTranslation
+			);
 		} catch (err) {
 			console.log(err);
 			new Notice(err.message);
@@ -74,39 +77,8 @@ export default class LanguageTranslator extends Plugin {
 		editor.replaceSelection(res);
 	};
 
-	async getTranslation(lang: string, text: string) {
-		let result = "";
-		switch (Number(this.settings.apiType.value)) {
-			case API_TYPES.Builtin:
-				let token = await this.getBuiltinAzureToken();
-				result = await getTextAzure(
-					text,
-					lang,
-					token,
-					this.settings.translateApiUrl
-				);
-				break;
-			case API_TYPES.Azure:
-				result = await getTextAzure(
-					text,
-					lang,
-					this.settings.token,
-					this.settings.translateApiUrl
-				);
-				break;
-			case API_TYPES.LibreTranslate:
-				result = await getTextLibreTranslate(
-					text,
-					lang,
-					this.settings.token,
-					this.settings.translateApiUrl
-				);
-				break;
-		}
-		return result;
-	}
-
 	async onload() {
+		this.translationService = new TranslationServiceImplementation(this);
 		await this.loadSettings();
 
 		// This adds an editor command that can perform some operation on the current editor instance
@@ -125,16 +97,6 @@ export default class LanguageTranslator extends Plugin {
 		// This adds a settings tab so the user can configure various aspects of the plugin
 		this.addSettingTab(new LanguageTranslatorSettingsTab(this.app, this));
 	}
-
-	getBuiltinAzureToken = async () => {
-		try {
-			const response = await fetch(AZURE_AUTH_URL);
-			return await response.text();
-		} catch (err) {
-			console.log(err);
-			new Notice(err.message);
-		}
-	};
 
 	async loadSettings() {
 		this.settings = Object.assign(
