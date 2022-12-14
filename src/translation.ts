@@ -35,17 +35,30 @@ export async function getTextAzure(
 	token: string,
 	translateApiUrl: string
 ) {
+	let res = "";
 	const payload = JSON.stringify([{ text: text }]);
 	const myHeaders = new Headers({
 		"Ocp-Apim-Subscription-Key": token,
 		"Ocp-Apim-Subscription-Region": "WestEurope",
 		"Content-type": "application/json",
 	});
-	const response = await fetch(`${translateApiUrl}&to=${lang}`, {
-		method: "POST",
-		body: payload,
-		headers: myHeaders,
-	});
-	const json = await response.json();
-	return json[0].translations[0].text;
+	try {
+		const response = await fetch(`${translateApiUrl}&to=${lang}`, {
+			method: "POST",
+			body: payload,
+			headers: myHeaders,
+		});
+		const json = await response.json();
+		if (json.error) {
+			res = json.error.message;
+		}
+		else {
+			res = json[0].translations[0].text;
+		}
+	}
+	catch (err) {
+		console.error(err);
+	}
+
+	return res;
 }
