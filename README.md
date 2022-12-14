@@ -21,8 +21,6 @@
 ![GitHub all releases](https://img.shields.io/github/downloads/twentytwokhz/language-translator/total)
 ![GitHub](https://img.shields.io/github/license/twentytwokhz/language-translator)
 
-<a href='https://ko-fi.com/U7U0F25F1' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
-
 <!-- ABOUT THE PROJECT -->
 
 # Language Translator
