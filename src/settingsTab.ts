@@ -4,6 +4,7 @@ import API_TYPES from "./apiTypes";
 import API_URLS from "./apiUrls";
 import langCodes from "./langCodes";
 import LanguageTranslator from "./main";
+import RegionCode from "./regionCode";
 
 const apiEntries: Array<ApiEntry> = [
 	{
@@ -23,6 +24,7 @@ const apiEntries: Array<ApiEntry> = [
 export default class LanguageTranslatorSettingsTab extends PluginSettingTab {
 	plugin: LanguageTranslator;
 	apiUrlTextSetting: TextAreaComponent;
+	regions: Array<RegionCode>;
 
 	constructor(app: App, plugin: LanguageTranslator) {
 		super(app, plugin);
@@ -72,6 +74,10 @@ export default class LanguageTranslatorSettingsTab extends PluginSettingTab {
 							this.apiUrlTextSetting.setValue(
 								API_URLS.AZURE_TRANSLATE_API_URL
 							);
+							this.plugin.settings.region = {
+								text: "Global",
+								code: "global"
+							};
 							break;
 						case API_TYPES.LibreTranslate:
 							this.plugin.settings.translateApiUrl =
@@ -91,6 +97,22 @@ export default class LanguageTranslatorSettingsTab extends PluginSettingTab {
 					await this.plugin.saveSettings();
 				});
 				dropDown.setValue(this.plugin.settings.apiType.value);
+			});
+
+		new Setting(containerEl)
+			.setName("Azure Translator Region")
+			.setDesc("Set regions")
+			.addDropdown((dropDown) => {
+				this.regions.forEach((el) => {
+					dropDown.addOption(el.code, el.text);
+				});
+				dropDown.onChange(async (value) => {
+					this.plugin.settings.region = this.regions.find(
+						(l) => l.code == value
+					);
+					await this.plugin.saveSettings();
+				});
+				dropDown.setValue(this.plugin.settings.region.code);
 			});
 
 		new Setting(containerEl).setName("API Url").addTextArea((text) => {

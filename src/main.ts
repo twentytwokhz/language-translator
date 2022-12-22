@@ -5,9 +5,10 @@ import API_URLS from "./apiUrls";
 import ApiEntry from "./apiEntry";
 import langCodes from "./langCodes";
 import { TranslationServiceImplementation } from "./translationServiceImplementation";
+import RegionCode from "./regionCode";
 
 const AZURE_AUTH_URL =
-	"https://func-language-worker-auth.azurewebsites.net/api/GetAuthToken";
+	"https://func-lang-translator-auth.azurewebsites.net/api/AuthToken";
 const MAX_CHARACTERS = 2000;
 
 interface LanguageTranslatorSettings {
@@ -16,6 +17,7 @@ interface LanguageTranslatorSettings {
 	translateApiUrl: string;
 	maxCharacters: number;
 	token: string;
+	region: RegionCode;
 }
 
 const DEFAULT_SETTINGS: LanguageTranslatorSettings = {
@@ -30,6 +32,10 @@ const DEFAULT_SETTINGS: LanguageTranslatorSettings = {
 	translateApiUrl: API_URLS.AZURE_TRANSLATE_API_URL,
 	maxCharacters: MAX_CHARACTERS,
 	token: "",
+	region: {
+		text: "Global",
+		code: "global"
+	}
 };
 
 export default class LanguageTranslator extends Plugin {
