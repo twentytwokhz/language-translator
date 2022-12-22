@@ -43,6 +43,32 @@ Find this plugin in the listing of community plugins in Obsidian and add it to y
 
 Or, if you'd like to install it manually, clone this repository to the `.obsidian/plugins/` directory in your vault, navigate to your newly cloned folder, run `npm i` or `yarn` to install dependencies, and run `npm run build` or `yarn build` to compile the plugin.
 
+## Settings
+
+![settings](img/settings.jpg)
+The plugin allows for certain types of configuration:
+
+**Target Language**
+
+Here we select what is the default target for our translation.
+
+**API Type**
+
+The plugin allows choice between the Builtin Azure API (limited version) and your own hosted services in *Azure* or *LibreTranslate*.
+
+**Azure Translator region**
+
+This setting is to allow you to set up your own Azure Translator instance with your predefined region.
+The default Azure region used by the builtin API is `global`
+
+**API Url**
+
+This is to distinguish between the default Azure API Url and other possible hosting locations
+
+**API Token**
+
+This token is required only for privately hosted instances of *Azure* or *LibreTranslate*
+
 <!-- USAGE EXAMPLES -->
 
 ## Usage
