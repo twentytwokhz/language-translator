@@ -5,7 +5,7 @@ import { getTextAzure, getTextLibreTranslate } from "./translation";
 import { TranslationService } from "./translationService";
 
 const AZURE_AUTH_URL =
-	"https://func-language-worker-auth.azurewebsites.net/api/GetAuthToken";
+	"https://func-lang-translator-auth.azurewebsites.net/api/AuthToken";
 
 export class TranslationServiceImplementation implements TranslationService {
 	plugin: LanguageTranslator;
