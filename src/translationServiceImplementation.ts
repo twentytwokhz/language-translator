@@ -41,7 +41,7 @@ export class TranslationServiceImplementation implements TranslationService {
 				result = await getTextAzure(
 					text,
 					lang,
-					this.plugin.settings.region,
+					this.plugin.settings.region.code,
 					this.plugin.settings.token,
 					this.plugin.settings.translateApiUrl
 				);

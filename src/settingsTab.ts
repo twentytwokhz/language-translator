@@ -3,6 +3,7 @@ import ApiEntry from "./apiEntry";
 import API_TYPES from "./apiTypes";
 import API_URLS from "./apiUrls";
 import langCodes from "./langCodes";
+import regions from "./regions";
 import LanguageTranslator from "./main";
 import RegionCode from "./regionCode";
 
@@ -24,7 +25,6 @@ const apiEntries: Array<ApiEntry> = [
 export default class LanguageTranslatorSettingsTab extends PluginSettingTab {
 	plugin: LanguageTranslator;
 	apiUrlTextSetting: TextAreaComponent;
-	regions: Array<RegionCode>;
 
 	constructor(app: App, plugin: LanguageTranslator) {
 		super(app, plugin);
@@ -103,11 +103,11 @@ export default class LanguageTranslatorSettingsTab extends PluginSettingTab {
 			.setName("Azure Translator Region")
 			.setDesc("Set regions")
 			.addDropdown((dropDown) => {
-				this.regions.forEach((el) => {
+				regions.forEach((el) => {
 					dropDown.addOption(el.code, el.text);
 				});
 				dropDown.onChange(async (value) => {
-					this.plugin.settings.region = this.regions.find(
+					this.plugin.settings.region = regions.find(
 						(l) => l.code == value
 					);
 					await this.plugin.saveSettings();
