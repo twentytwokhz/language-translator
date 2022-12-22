@@ -32,6 +32,7 @@ export class TranslationServiceImplementation implements TranslationService {
 				result = await getTextAzure(
 					text,
 					lang,
+					"Global",
 					token,
 					this.plugin.settings.translateApiUrl
 				);
@@ -40,6 +41,7 @@ export class TranslationServiceImplementation implements TranslationService {
 				result = await getTextAzure(
 					text,
 					lang,
+					this.plugin.settings.region.code,
 					this.plugin.settings.token,
 					this.plugin.settings.translateApiUrl
 				);

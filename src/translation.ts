@@ -32,6 +32,7 @@ export async function getTextLibreTranslate(
 export async function getTextAzure(
 	text: string,
 	lang: string,
+	region: string,
 	token: string,
 	translateApiUrl: string
 ) {
@@ -39,7 +40,7 @@ export async function getTextAzure(
 	const payload = JSON.stringify([{ text: text }]);
 	const myHeaders = new Headers({
 		"Ocp-Apim-Subscription-Key": token,
-		"Ocp-Apim-Subscription-Region": "WestEurope",
+		"Ocp-Apim-Subscription-Region": region,
 		"Content-type": "application/json",
 	});
 	try {
