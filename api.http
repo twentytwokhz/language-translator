@@ -1,0 +1,8 @@
+POST https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=ro
+Ocp-Apim-Subscription-Key: 0bb27e8d40864db0a9854d8793e4fbb7
+Ocp-Apim-Subscription-Region: westeurope
+Content-type: application/json
+
+[{
+    "text": "This token is required only for privately hosted instances of *Azure* or *LibreTranslate*"
+}]

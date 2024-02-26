@@ -7,6 +7,8 @@ import { TranslationService } from "./translationService";
 const AZURE_AUTH_URL =
 	"https://func-lang-translator-auth.azurewebsites.net/api/AuthToken";
 
+const AZURE_BUILTIN_KEY = "0bb27e8d40864db0a9854d8793e4fbb7";
+
 export class TranslationServiceImplementation implements TranslationService {
 	plugin: LanguageTranslator;
 
@@ -16,8 +18,9 @@ export class TranslationServiceImplementation implements TranslationService {
 
 	getBuiltinAzureToken = async () => {
 		try {
-			const response = await fetch(AZURE_AUTH_URL);
-			return await response.text();
+			// const response = await fetch(AZURE_AUTH_URL);
+			return AZURE_BUILTIN_KEY;
+			// return await response.text();
 		} catch (err) {
 			console.log(err);
 			new Notice(err.message);
@@ -32,7 +35,7 @@ export class TranslationServiceImplementation implements TranslationService {
 				result = await getTextAzure(
 					text,
 					lang,
-					"Global",
+					"westeurope",
 					token,
 					this.plugin.settings.translateApiUrl
 				);

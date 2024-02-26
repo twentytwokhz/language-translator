@@ -1,6 +1,6 @@
 {
 	"name": "language-translator",
-	"version": "1.0.0",
+	"version": "1.0.4",
 	"description": "Translates given text to desired language",
 	"main": "main.js",
 	"scripts": {
