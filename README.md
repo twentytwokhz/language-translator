@@ -25,7 +25,7 @@
 
 # Language Translator
 
-ro:An Obsidian plugin to translate selected text in the desired language.
+An Obsidian plugin to translate selected text in the desired language.
 
 ## About The Project
 
