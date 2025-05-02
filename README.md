@@ -69,6 +69,11 @@ This is to distinguish between the default Azure API Url and other possible host
 
 This token is required only for privately hosted instances of *Azure* or *LibreTranslate*
 
+1. Sign in to the [Azure portal](https://portal.azure.com/).
+2. Navigate to your Azure Cognitive Services resource.
+3. In the left-hand menu, select "Keys and Endpoint".
+4. Find your API keys listed under "Key1" and "Key2".
+
 <!-- USAGE EXAMPLES -->
 
 ## Usage
