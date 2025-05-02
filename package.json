@@ -12,7 +12,7 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "^16.11.7",
-		"esbuild": "0.13.8",
+		"esbuild": "0.25.0",
 		"obsidian": "^0.16.0",
 		"tslib": "2.3.1",
 		"typescript": "4.4.4"
